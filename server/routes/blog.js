@@ -17,12 +17,26 @@ router.get('/feed', async (req, res) => {
 router.post('/add-post', async (req, res) => {
   try {
     
-    const { title, content } = req.body;
-    const newBlog = new Blog({ title, content });
+    const { title, content, author } = req.body;
+    const newBlog = new Blog({ title, content, author });
     await newBlog.save();
+    res.status(201).json(newBlog);
   } catch (error) {
     res.status(500).json({ message: "Error fetching blog posts", error });
   }
 })
+
+router.delete('/delete-post/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBlog = await Blog.findByIdAndDelete(id);
+    if (!deletedBlog) {
+      return res.status(404).json({ message: "Blog post not found" });
+    }
+    res.json({ message: "Blog post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting blog post", error });
+  }
+});
 
 export default router;
