@@ -32,7 +32,7 @@ router.delete("/delete-post/:id", async (req, res) => {
     if (!deletedBlog) {
       return res.status(404).json({ message: "Blog post not found" });
     }
-    res.json({ message: "Blog post deleted successfully" });
+    res.status(200).json({ message: "Blog post deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting blog post", error });
   }
